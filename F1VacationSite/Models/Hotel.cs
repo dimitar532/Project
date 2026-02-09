@@ -4,6 +4,7 @@ namespace F1VacationSite.Models
 {
     public class Hotel
     {
+        [Key]
         public int Id { get; set; }
 
         [MaxLength(100)]
@@ -14,7 +15,7 @@ namespace F1VacationSite.Models
         public string City { get; set; }
 
         [Range(1, 5)]
-        public decimal Stars { get; set; }
+        public int Stars { get; set; }
 
         public ICollection<Trip> Trips { get; set; } = new List<Trip>();
     }

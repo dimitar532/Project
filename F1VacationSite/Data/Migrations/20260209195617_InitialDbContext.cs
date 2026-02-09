@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace F1VacationSite.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialDbDesign : Migration
+    public partial class InitialDbContext : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,7 +19,7 @@ namespace F1VacationSite.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     City = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Stars = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Stars = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -51,7 +51,7 @@ namespace F1VacationSite.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RaceId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     HotelId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Price = table.Column<double>(type: "float", nullable: false),
                     Nights = table.Column<int>(type: "int", nullable: false),
                     HotelId1 = table.Column<int>(type: "int", nullable: true),
                     RaceId1 = table.Column<int>(type: "int", nullable: true)

@@ -4,6 +4,7 @@ namespace F1VacationSite.Models
 {
     public class Race
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]

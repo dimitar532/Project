@@ -1,13 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace F1VacationSite.Models
 {
     public class Trip
     {
-        
+        [Key]
         public int Id { get; set; }
 
         [Required]
+        [ForeignKey(nameof(Race))]
         public string RaceId { get; set; }
 
         [Required]
@@ -15,7 +17,7 @@ namespace F1VacationSite.Models
 
         [Required]
         [Range(100, 10000)]
-        public decimal Price { get; set; }
+        public double Price { get; set; }
 
         [Required]
         [Range(1, 5)]

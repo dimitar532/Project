@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace F1VacationSite.Migrations
 {
     [DbContext(typeof(VacationDbContext))]
-    [Migration("20260208154715_InitialDbDesign")]
-    partial class InitialDbDesign
+    [Migration("20260209195617_InitialDbContext")]
+    partial class InitialDbContext
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,8 +43,8 @@ namespace F1VacationSite.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<decimal>("Stars")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("Stars")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -102,8 +102,8 @@ namespace F1VacationSite.Migrations
                     b.Property<int>("Nights")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.Property<string>("RaceId")
                         .IsRequired()

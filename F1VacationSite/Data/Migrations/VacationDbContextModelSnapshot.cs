@@ -40,8 +40,8 @@ namespace F1VacationSite.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<decimal>("Stars")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("Stars")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -99,8 +99,8 @@ namespace F1VacationSite.Migrations
                     b.Property<int>("Nights")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.Property<string>("RaceId")
                         .IsRequired()

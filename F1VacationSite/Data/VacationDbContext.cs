@@ -17,6 +17,9 @@ namespace F1VacationSite.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder
+                .ApplyConfigurationsFromAssembly(typeof(VacationDbContext).Assembly);
         }
     }
 }
