@@ -9,7 +9,7 @@ namespace F1VacationSite
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
             string? connectionString = builder.Configuration
-                .GetConnectionString("DefaultConnection");
+                .GetConnectionString("DevSqlServer");
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
