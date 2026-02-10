@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace F1VacationSite.Models
 {
@@ -7,13 +8,15 @@ namespace F1VacationSite.Models
         [Key]
         public int Id { get; set; }
 
+        [Required]
         [MaxLength(100)]
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
 
         [Required]
         [MaxLength(50)]
-        public string City { get; set; }
+        public string City { get; set; } = null!;
 
+        [Required]
         [Range(1, 5)]
         public int Stars { get; set; }
 
