@@ -1,44 +1,76 @@
 ﻿using F1VacationSite.Data;
 using F1VacationSite.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace F1VacationSite.Controllers
 {
-    public class TripController : Controller
+    public class TripsController : Controller
     {
         private readonly VacationDbContext dbContext;
-        public TripController(VacationDbContext dbContext)
+        public TripsController(VacationDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
-            IEnumerable<Trip> trips = dbContext
+            var trips = await dbContext
                 .Trips
-                .Include(t => t.Races)
-                .Include(t => t.Hotels)
-                .ToList();
+                .Include(t => t.Race)
+                .Include(t => t.Hotel)
+                .AsNoTracking()
+                .ToListAsync();
 
-            return View();
+            return View(trips);
         }
 
-        public IActionResult Details(int id)
+        [HttpGet]
+        public async Task<IActionResult> Create()
         {
-            return View();
+            await PopulateSelectTripsAsync();
+            return View(new Trip());
         }
-         public IActionResult Create()
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Trip trip)
         {
-            return View();
+            if (!ModelState.IsValid)
+            {
+                await PopulateSelectTripsAsync();
+                return View(trip);
+            }
+
+            dbContext.Trips.Add(trip);
+            await dbContext.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
-         public IActionResult Edit(int id)
+
+        public IActionResult Details(int id) => View();
+
+        public IActionResult Edit(int id) => View();
+
+        public IActionResult Delete(int id) => View();
+
+        private async Task PopulateSelectTripsAsync()
         {
-            return View();
-        }
-         public IActionResult Delete(int id)
-        {
-            return View();
+            var races = await dbContext.Races
+                .AsNoTracking()
+                .OrderBy(r => r.Name)
+                .ToListAsync();
+
+            var hotels = await dbContext.Hotels
+                .AsNoTracking()
+                .OrderBy(h => h.Name)
+                .ToListAsync();
+
+            ViewData["Races"] = new SelectList(races, "Id", "Name");
+            ViewData["Hotels"] = new SelectList(hotels, "Id", "Name");
         }
     }
 }
+
