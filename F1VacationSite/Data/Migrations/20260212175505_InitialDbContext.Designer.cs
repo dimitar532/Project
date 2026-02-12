@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace F1VacationSite.Migrations
 {
     [DbContext(typeof(VacationDbContext))]
-    [Migration("20260209195617_InitialDbContext")]
+    [Migration("20260212175505_InitialDbContext")]
     partial class InitialDbContext
     {
         /// <inheritdoc />
@@ -60,8 +60,8 @@ namespace F1VacationSite.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Circuit")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Country")
                         .IsRequired()
@@ -81,7 +81,7 @@ namespace F1VacationSite.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Rasec");
+                    b.ToTable("Races");
                 });
 
             modelBuilder.Entity("F1VacationSite.Models.Trip", b =>
@@ -92,44 +92,44 @@ namespace F1VacationSite.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("HotelId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("HotelId1")
+                    b.Property<int>("HotelId")
                         .HasColumnType("int");
 
                     b.Property<int>("Nights")
                         .HasColumnType("int");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("RaceId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("RaceId1")
+                    b.Property<int>("RaceId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("HotelId1");
+                    b.HasIndex("HotelId");
 
-                    b.HasIndex("RaceId1");
+                    b.HasIndex("RaceId");
 
                     b.ToTable("Trips");
                 });
 
             modelBuilder.Entity("F1VacationSite.Models.Trip", b =>
                 {
-                    b.HasOne("F1VacationSite.Models.Hotel", null)
+                    b.HasOne("F1VacationSite.Models.Hotel", "Hotel")
                         .WithMany("Trips")
-                        .HasForeignKey("HotelId1");
+                        .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("F1VacationSite.Models.Race", null)
+                    b.HasOne("F1VacationSite.Models.Race", "Race")
                         .WithMany("Trips")
-                        .HasForeignKey("RaceId1");
+                        .HasForeignKey("RaceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Hotel");
+
+                    b.Navigation("Race");
                 });
 
             modelBuilder.Entity("F1VacationSite.Models.Hotel", b =>

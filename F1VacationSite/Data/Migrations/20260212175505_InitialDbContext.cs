@@ -27,20 +27,20 @@ namespace F1VacationSite.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Rasec",
+                name: "Races",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Circuit = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Circuit = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Country = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Rasec", x => x.Id);
+                    table.PrimaryKey("PK_Races", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -49,37 +49,37 @@ namespace F1VacationSite.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RaceId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    HotelId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<double>(type: "float", nullable: false),
-                    Nights = table.Column<int>(type: "int", nullable: false),
-                    HotelId1 = table.Column<int>(type: "int", nullable: true),
-                    RaceId1 = table.Column<int>(type: "int", nullable: true)
+                    RaceId = table.Column<int>(type: "int", nullable: false),
+                    HotelId = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Nights = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Trips", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Trips_Hotels_HotelId1",
-                        column: x => x.HotelId1,
+                        name: "FK_Trips_Hotels_HotelId",
+                        column: x => x.HotelId,
                         principalTable: "Hotels",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Trips_Rasec_RaceId1",
-                        column: x => x.RaceId1,
-                        principalTable: "Rasec",
-                        principalColumn: "Id");
+                        name: "FK_Trips_Races_RaceId",
+                        column: x => x.RaceId,
+                        principalTable: "Races",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Trips_HotelId1",
+                name: "IX_Trips_HotelId",
                 table: "Trips",
-                column: "HotelId1");
+                column: "HotelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Trips_RaceId1",
+                name: "IX_Trips_RaceId",
                 table: "Trips",
-                column: "RaceId1");
+                column: "RaceId");
         }
 
         /// <inheritdoc />
@@ -92,7 +92,7 @@ namespace F1VacationSite.Migrations
                 name: "Hotels");
 
             migrationBuilder.DropTable(
-                name: "Rasec");
+                name: "Races");
         }
     }
 }
