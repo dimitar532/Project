@@ -34,6 +34,49 @@ namespace F1VacationSite.Controllers
             return View(new Trip());
         }
 
+        public async Task<IActionResult> Details(int id)
+        {
+            var trip = await dbContext
+                .Trips
+                .Include(t => t.Race)
+                .Include(t => t.Hotel)
+                .FirstOrDefaultAsync(t => t.Id == id);
+
+            if(trip == null)
+            {
+                return NotFound();
+            }
+
+            return View(trip);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var trip = await dbContext.Trips.FindAsync(id);
+
+            if (trip == null)
+                return NotFound();
+
+            await PopulateSelectTripsAsync();
+            return View(trip);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var trip = await dbContext.Trips.FindAsync(id);
+            if (trip == null)
+            {
+                return NotFound();
+            }
+
+            dbContext.Trips.Remove(trip);
+            await dbContext.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Trip trip)
@@ -49,12 +92,6 @@ namespace F1VacationSite.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
-        public IActionResult Details(int id) => View();
-
-        public IActionResult Edit(int id) => View();
-
-        public IActionResult Delete(int id) => View();
 
         private async Task PopulateSelectTripsAsync()
         {
