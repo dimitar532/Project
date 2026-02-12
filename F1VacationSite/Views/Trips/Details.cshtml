@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Details";
+    Layout = "Trip";
 }
 
 <h1>Details</h1>
@@ -10,30 +11,14 @@
     <h4>Trip</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RaceId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RaceId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HotelId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HotelId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nights)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nights)
-        </dd>
+        <dt class = "col-sm-2">Price</dt>
+        <dd class = "col-sm-10">Price</dd>
+        <dt class = "col-sm-2">Nights</dt>
+        <dd class = "col-sm-10">Nights</dd>
+        <dt class = "col-sm-2">Race</dt>
+        <dd class = "col-sm-10">Country</dd>
+        <dt class = "col-sm-2">Hotel</dt>
+        <dd class = "col-sm-10">City</dd>
     </dl>
 </div>
 <div>
