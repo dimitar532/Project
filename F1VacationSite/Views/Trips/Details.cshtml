@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Details";
-    Layout = "Trip";
+    Layout = "_Layout";
 }
 
 <h1>Details</h1>
@@ -12,13 +12,13 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">Price</dt>
-        <dd class = "col-sm-10">Price</dd>
+        <dd class="col-sm-10">@Model.Price</dd>
         <dt class = "col-sm-2">Nights</dt>
-        <dd class = "col-sm-10">Nights</dd>
+        <dd class="col-sm-10">@Model.Nights</dd>
         <dt class = "col-sm-2">Race</dt>
-        <dd class = "col-sm-10">Country</dd>
+        <dd class = "col-sm-10">@Model.Race?.Name</dd>
         <dt class = "col-sm-2">Hotel</dt>
-        <dd class = "col-sm-10">City</dd>
+        <dd class = "col-sm-10">@Model.Hotel?.Name</dd>
     </dl>
 </div>
 <div>

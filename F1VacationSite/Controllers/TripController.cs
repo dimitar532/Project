@@ -62,7 +62,7 @@ namespace F1VacationSite.Controllers
             return View(trip);
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> Delete(int id)
         { 
             var trip = await dbContext.Trips.FindAsync(id);
