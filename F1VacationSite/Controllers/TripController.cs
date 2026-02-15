@@ -64,7 +64,7 @@ namespace F1VacationSite.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
-        {
+        { 
             var trip = await dbContext.Trips.FindAsync(id);
             if (trip == null)
             {
@@ -78,11 +78,11 @@ namespace F1VacationSite.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Trip trip)
         {
             if (!ModelState.IsValid)
             {
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors)) { Console.WriteLine("MODEL ERROR: " + error.ErrorMessage); }
                 await PopulateSelectTripsAsync();
                 return View(trip);
             }
@@ -100,10 +100,14 @@ namespace F1VacationSite.Controllers
                 .OrderBy(r => r.Name)
                 .ToListAsync();
 
+            races.Insert(0, new Race { Id = 0, Name = "-- Select Race --" });
+
             var hotels = await dbContext.Hotels
                 .AsNoTracking()
                 .OrderBy(h => h.Name)
                 .ToListAsync();
+
+            hotels.Insert(0, new Hotel { Id = 0, Name = "-- Select Hotel --" });
 
             ViewData["Races"] = new SelectList(races, "Id", "Name");
             ViewData["Hotels"] = new SelectList(hotels, "Id", "Name");

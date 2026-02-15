@@ -25,7 +25,7 @@ namespace F1VacationSite.Models
         [Range(1, 5)]
         public int Nights { get; set; }
 
-        public virtual Race Race { get; set; } = null!;
-        public virtual Hotel Hotel { get; set; } = null!;
+        public virtual Race? Race { get; set; } = null!;
+        public virtual Hotel? Hotel { get; set; } = null!;
     }
 }
