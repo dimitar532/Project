@@ -1,0 +1,70 @@
+﻿@model F1VacationSite.Models.Race
+
+@{
+    ViewData["Title"] = "Race Details";
+    Layout = "_Layout";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-8">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header">
+                    <h2 class="mb-0">@Model.Name</h2>
+                    <small class="text-muted">@Model.Circuit — @Model.Country</small>
+                </div>
+
+                <div class="card-body">
+                    <p class="mb-1"><strong>Dates:</strong> @Model.StartDate:d — @Model.EndDate:d</p>
+                    <p class="mb-0"><strong>Available trips:</strong> @(Model.Trips?.Count ?? 0)</p>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Trips for this race</h5>
+
+                    @if (Model.Trips == null || !Model.Trips.Any())
+                    {
+                        <div class="alert alert-info">No trips available for this race.</div>
+                    }
+                    else
+                    {
+                        <table class="table table-striped table-bordered align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Hotel</th>
+                                    <th>City</th>
+                                    <th class="text-end">Price</th>
+                                    <th class="text-center">Nights</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var trip in Model.Trips)
+                                {
+                                    <tr>
+                                        <td>@(trip.Hotel?.Name ?? $"Hotel #{trip.HotelId}")</td>
+                                        <td>@(trip.Hotel?.City ?? "—")</td>
+                                        <td class="text-end">@trip.Price.ToString("C")</td>
+                                        <td class="text-center">@trip.Nights</td>
+                                        <td class="text-end">
+                                            <a asp-controller="Trips" asp-action="Details" asp-route-id="@trip.Id" class="btn btn-sm btn-primary">Details</a>
+                                            <a asp-controller="Trips" asp-action="Edit" asp-route-id="@trip.Id" class="btn btn-sm btn-secondary ms-1">Edit</a>
+                                            <a asp-controller="Trips" asp-action="Delete" asp-route-id="@trip.Id" class="btn btn-sm btn-danger ms-1">Delete</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+
+            <div class="mt-3">
+                <a asp-action="Index" asp-controller="Race" class="btn btn-secondary">Back to Races</a>
+                <a asp-controller="Trips" asp-action="Create" class="btn btn-primary ms-2">Create Trip</a>
+            </div>
+        </div>
+    </div>
+</div>
