@@ -53,7 +53,11 @@ namespace F1VacationSite.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var trip = await dbContext.Trips.FindAsync(id);
+            var trip = await dbContext
+                .Trips
+                .Include(t => t.Race)
+                .Include(t => t.Hotel)
+                .FirstOrDefaultAsync(t => t.Id == id);
 
             if (trip == null)
                 return NotFound();
@@ -65,16 +69,18 @@ namespace F1VacationSite.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         { 
-            var trip = await dbContext.Trips.FindAsync(id);
+            var trip = await dbContext
+                .Trips
+                .Include(t => t.Race)
+                .Include(t => t.Hotel)
+                .FirstOrDefaultAsync(t => t.Id == id);
+
             if (trip == null)
             {
                 return NotFound();
             }
 
-            dbContext.Trips.Remove(trip);
-            await dbContext.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Index));
+            return View(trip);
         }
 
         [HttpPost]
@@ -108,6 +114,22 @@ namespace F1VacationSite.Controllers
             }
 
             dbContext.Trips.Update(trip);
+            await dbContext.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var trip = await dbContext.Trips.FindAsync(id);
+
+            if(trip == null)
+            {
+                return NotFound();
+            }
+
+            dbContext.Trips.Remove(trip);
             await dbContext.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));

@@ -9,17 +9,7 @@
 
 <div>
     <h4>Trip</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">Price</dt>
-        <dd class="col-sm-10">@Model.Price</dd>
-        <dt class = "col-sm-2">Nights</dt>
-        <dd class="col-sm-10">@Model.Nights</dd>
-        <dt class = "col-sm-2">Race</dt>
-        <dd class = "col-sm-10">@Model.Race?.Name</dd>
-        <dt class = "col-sm-2">Hotel</dt>
-        <dd class = "col-sm-10">@Model.Hotel?.Name</dd>
-    </dl>
+    @await Html.PartialAsync("TripPartial", Model)
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |

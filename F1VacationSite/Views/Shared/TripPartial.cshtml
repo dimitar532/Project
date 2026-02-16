@@ -3,9 +3,9 @@
 <div class="card mb-3 shadow-sm">
 	<div class="card-body">
 		<h5 class="card-title">@Model.Race?.Name</h5>
-		<p class="card-text" mb-1><strong>Hotel:</strong> @Model.Hotel?.Name</p>
-		<p class="card-text" mb-1><strong>Price:</strong> @Model.Price</p>
-		<p class="card-text" mb-2><strong>Nights:</strong> @Model.Nights</p>
+		<p class="card-text mb-1"><strong>Hotel:</strong> @Model.Hotel?.Name</p>
+		<p class="card-text mb-1"><strong>Price:</strong> @Model.Price</p>
+		<p class="card-text mb-2"><strong>Nights:</strong> @Model.Nights</p>
 
 		<a asp-controller="Trips" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-primary btn-sm">Details</a>
 		<a asp-controller="Trips" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary btn-sm">Edit</a>
