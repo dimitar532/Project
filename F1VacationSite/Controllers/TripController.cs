@@ -93,6 +93,26 @@ namespace F1VacationSite.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, Trip trip)
+        {
+             if(id != trip.Id)
+            {
+                return NotFound();
+            }
+
+             if(!ModelState.IsValid)
+            {
+                await PopulateSelectTripsAsync();
+                return View(trip);
+            }
+
+            dbContext.Trips.Update(trip);
+            await dbContext.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
         private async Task PopulateSelectTripsAsync()
         {
             var races = await dbContext.Races
