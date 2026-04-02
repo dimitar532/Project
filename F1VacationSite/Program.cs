@@ -1,4 +1,6 @@
 using F1VacationSite.Data;
+using F1VacationSite.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace F1VacationSite
@@ -18,6 +20,16 @@ namespace F1VacationSite
             {
                 options.UseSqlServer(connectionString);
             });
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.Password.RequireDigit = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredLength = 8;
+            })
+            .AddEntityFrameworkStores<VacationDbContext>()
+            .AddDefaultTokenProviders();
 
             WebApplication app = builder.Build();
 

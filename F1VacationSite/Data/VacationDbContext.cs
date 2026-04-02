@@ -1,10 +1,13 @@
 ﻿using System;
 using F1VacationSite.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.General;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using F1VacationSite.Data.Models;
 
 namespace F1VacationSite.Data
 {
-    public class VacationDbContext : DbContext
+    public class VacationDbContext : IdentityDbContext<ApplicationUser>
     {
         public VacationDbContext(DbContextOptions<VacationDbContext> options) 
             : base(options)
