@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using F1VacationSite.Constants;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace F1VacationSite.Models
@@ -9,15 +10,15 @@ namespace F1VacationSite.Models
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(100)]
+        [StringLength(HotelConstants.NameMaxLength, MinimumLength = HotelConstants.NameMinLength)]
         public string Name { get; set; } = null!;
 
         [Required]
-        [MaxLength(50)]
+        [StringLength(HotelConstants.CityMaxLength)]
         public string City { get; set; } = null!;
 
         [Required]
-        [Range(1, 5)]
+        [Range(HotelConstants.StarsMin, HotelConstants.StarsMax)]
         public int Stars { get; set; }
 
         public ICollection<Trip> Trips { get; set; } = new List<Trip>();
