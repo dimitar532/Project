@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using F1VacationSite.Constants;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace F1VacationSite.Models
@@ -17,12 +18,12 @@ namespace F1VacationSite.Models
         public int HotelId { get; set; }
 
         [Required]
-        [Range(100, 10000)]
+        [Range(TripConstants.PriceMin, TripConstants.PriceMax)]
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
 
         [Required]
-        [Range(1, 5)]
+        [Range(TripConstants.NightsMin, TripConstants.NightsMax)]
         public int Nights { get; set; }
 
         public virtual Race? Race { get; set; } = null!;
