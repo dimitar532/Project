@@ -1,4 +1,5 @@
-﻿using System;
+﻿using F1VacationSite.Constants;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -10,14 +11,14 @@ namespace F1VacationSite.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(100)]
+        [StringLength(RaceConstants.NameMaxLength, MinimumLength = RaceConstants.NameMinLength)]
         public string Name { get; set; } = null!;
 
-        [StringLength(100)]
+        [StringLength(RaceConstants.CircuitMaxLength)]
         public string? Circuit { get; set; }
 
         [Required]
-        [MaxLength(50)]
+        [StringLength(RaceConstants.CountryMaxLength)]
         public string Country { get; set; } = null!;
 
         [Required]
