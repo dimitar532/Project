@@ -19,7 +19,7 @@ namespace F1VacationSite.View_Models
 
         [Required]
         [DataType(DataType.Password)]
-        [StringLength(100, MinimumLength = UserConstants.PasswordMinLength)]
+        [StringLength(100, MinimumLength = UserConstants.PasswordMinLength, ErrorMessage = "Password must be at least 8 characters.")]
         public string Password { get; set; } = null!;
 
         [Required]
