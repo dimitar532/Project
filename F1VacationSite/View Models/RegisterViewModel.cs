@@ -3,7 +3,7 @@ using F1VacationSite.Constants;
 
 namespace F1VacationSite.View_Models
 {
-    public class Register
+    public class RegisterViewModel
     {
         [Required]
         [StringLength(UserConstants.FirstNameMaxLength, MinimumLength = UserConstants.FirstNameMinLength)]
