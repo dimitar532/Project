@@ -1,0 +1,23 @@
+﻿@model F1VacationSite.Models.Trip
+
+<h2>Book a Trip</h2>
+
+<div>
+    <h4>@Model.Race!.Name</h4>
+    <p>Circuit: @Model.Race.Circuit</p>
+    <p>Date: @Model.Race.StartDate.ToString("dd.MM.yyyy") - @Model.Race.EndDate.ToString("dd.MM.yyyy")</p>
+    <p>Hotel: @Model.Hotel!.Name (@Model.Hotel.Stars ⭐)</p>
+    <p>Nights: @Model.Nights</p>
+    <p>Price: @Model.Price лв.</p>
+</div>
+
+<form asp-action="Create" asp-route-tripId="@Model.Id" method="post">
+    @Html.AntiForgeryToken()
+    <div>
+        <label for="specialRequest">Special Requests</label>
+        <textarea id="specialRequest" name="specialRequest" class="form-control" rows="3"></textarea>
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Confirm Reservation</button>
+    <a asp-controller="Trips" asp-action="Index" class="btn btn-secondary">Back</a>
+</form>

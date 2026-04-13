@@ -24,15 +24,15 @@ namespace F1VacationSite.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var userId = await userManager
-                .GetUserAsync(User);
+            var userId = userManager
+                .GetUserId(User);
 
-            var reservations = dbContext.Reservations
+            var reservations = await dbContext.Reservations
                 .Include(r => r.Trip)
                 .ThenInclude(t => t!.Race)
                 .Include(r => r.Trip)
                 .ThenInclude(t => t!.Hotel)
-                .Where(r => r.UserId == userId.Id)
+                .Where(r => r.UserId == userId)
                 .AsNoTracking()
                 .ToListAsync();
 

@@ -24,12 +24,18 @@ namespace F1VacationSite
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = true;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequiredLength = 8;
             })
             .AddEntityFrameworkStores<VacationDbContext>()
             .AddDefaultTokenProviders();
+
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/Login";
+            });
 
             WebApplication app = builder.Build();
 
@@ -44,6 +50,7 @@ namespace F1VacationSite
             app.UseHttpsRedirection();
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapStaticAssets();

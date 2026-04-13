@@ -1,0 +1,42 @@
+﻿@model IEnumerable<F1VacationSite.Models.Reservation>
+
+<h2>My Reservations</h2>
+
+@if (!Model.Any())
+{
+    <p>You have no reservations yet.</p>
+    <a asp-controller="Trips" asp-action="Index">Browse Trips</a>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Race</th>
+                <th>Hotel</th>
+                <th>Nights</th>
+                <th>Price</th>
+                <th>Reserved On</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var r in Model)
+            {
+                <tr>
+                    <td>@r.Trip!.Race!.Name</td>
+                    <td>@r.Trip.Hotel!.Name</td>
+                    <td>@r.Trip.Nights</td>
+                    <td>@r.Trip.Price лв.</td>
+                    <td>@r.ReservationDate.ToString("dd.MM.yyyy")</td>
+                    <td>
+                        <form asp-action="Cancel" asp-route-reservationId="@r.Id" method="post">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
