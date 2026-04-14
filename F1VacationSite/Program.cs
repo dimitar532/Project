@@ -1,5 +1,6 @@
 using F1VacationSite.Data;
 using F1VacationSite.Data.Models;
+using F1VacationSite.Data.Seed;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,7 +8,7 @@ namespace F1VacationSite
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
             string? connectionString = builder.Configuration
@@ -39,6 +40,11 @@ namespace F1VacationSite
 
             WebApplication app = builder.Build();
 
+            using (var scope = app.Services.CreateScope())
+            {
+                await AdminSeeder.SeedAsync(scope.ServiceProvider);
+            }
+
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
@@ -47,13 +53,19 @@ namespace F1VacationSite
                 app.UseHsts();
             }
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapStaticAssets();
+
+            app.MapControllerRoute(
+                name: "areas",
+                pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}")
+                .WithStaticAssets();
+
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}")
