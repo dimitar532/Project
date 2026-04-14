@@ -52,6 +52,11 @@ namespace F1VacationSite.Controllers
                 return NotFound();
             }
 
+            if (trip.Race == null || trip.Hotel == null)
+            {
+                return NotFound();
+            }
+
             return View(trip);
         }
 

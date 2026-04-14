@@ -1,5 +1,11 @@
 ﻿@model F1VacationSite.Models.Trip
 
+@if (Model.Race == null || Model.Hotel == null)
+{
+    <p>Error: Trip data not loaded correctly.</p>
+    return;
+}
+
 <h2>Book a Trip</h2>
 
 <div>
