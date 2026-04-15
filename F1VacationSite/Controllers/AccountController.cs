@@ -47,6 +47,8 @@ namespace F1VacationSite.Controllers
                 await signInManager
                     .SignInAsync(user, isPersistent: false);
 
+                await userManager.AddClaimAsync(user, new System.Security.Claims.Claim("FirstName", model.FirstName ));
+
                 return RedirectToAction("Index", "Home");
             }
 
@@ -79,6 +81,12 @@ namespace F1VacationSite.Controllers
                 model.RememberMe,
                 lockoutOnFailure: false
                 );
+
+            var user = await userManager.FindByEmailAsync(model.Email);
+            if (user != null)
+            {
+                await userManager.AddClaimAsync(user, new System.Security.Claims.Claim("FirstName", user.FirstName));
+            }
 
             if (result.Succeeded)
             {

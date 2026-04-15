@@ -1,14 +1,18 @@
 ﻿@model IEnumerable<F1VacationSite.Models.Trip>
 
 @{
-    ViewData["Title"] = "Trips";
+	ViewData["Title"] = "Trips";
 }
 
 <h1>Trips</h1>
+@if (User.IsInRole("Admin"))
+{
+	<p>
+		<a asp-action="Create">Create New</a>
+	</p>
+}
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-@foreach (var trip in Model) {
-            @await Html.PartialAsync("TripPartial", trip)
+@foreach (var trip in Model)
+{
+	@await Html.PartialAsync("TripPartial", trip)
 }

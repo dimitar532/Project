@@ -9,7 +9,11 @@
 
 		<a asp-controller="Trips" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-primary btn-sm">Details</a>
 		<a asp-controller="Reservation" asp-action="Create" asp-route-tripId="@Model.Id" class="btn btn-success btn-sm">Book a Trip</a>
-		<a asp-controller="Trips" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary btn-sm">Edit</a>
-		<a asp-controller="Trips" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger btn-sm">Delete</a>
+
+		@if (User.IsInRole("Admin"))
+		{
+			<a asp-controller="Trips" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary btn-sm">Edit</a>
+			<a asp-controller="Trips" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger btn-sm">Delete</a>
+		}
 	</div>
 </div>
