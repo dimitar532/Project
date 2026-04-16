@@ -28,5 +28,7 @@ namespace F1VacationSite.Models
 
         public virtual Race? Race { get; set; } = null!;
         public virtual Hotel? Hotel { get; set; } = null!;
+
+        public string? ImageUrl { get; set; }
     }
 }

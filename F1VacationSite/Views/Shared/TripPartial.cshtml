@@ -1,19 +1,36 @@
 ﻿@model F1VacationSite.Models.Trip
 
-<div class="card mb-3 shadow-sm">
-	<div class="card-body">
-		<h5 class="card-title">@Model.Race?.Name</h5>
-		<p class="card-text mb-1"><strong>Hotel:</strong> @Model.Hotel?.Name</p>
-		<p class="card-text mb-1"><strong>Price:</strong> @Model.Price</p>
-		<p class="card-text mb-2"><strong>Nights:</strong> @Model.Nights</p>
-
-		<a asp-controller="Trips" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-primary btn-sm">Details</a>
-		<a asp-controller="Reservation" asp-action="Create" asp-route-tripId="@Model.Id" class="btn btn-success btn-sm">Book a Trip</a>
-
-		@if (User.IsInRole("Admin"))
-		{
-			<a asp-controller="Trips" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary btn-sm">Edit</a>
-			<a asp-controller="Trips" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger btn-sm">Delete</a>
-		}
-	</div>
+<div class="card mb-4 shadow-sm border-0" style="border-radius: 12px; overflow: hidden;">
+    <div class="row g-0">
+        <div class="col-md-3 d-flex align-items-center justify-content-center bg-danger text-white p-3">
+            <div class="text-center">
+                <div style="font-size: 2rem;">🏎️</div>
+                <div class="fw-bold mt-1">@Model.Race?.Country</div>
+                <div class="small">@Model.Race?.StartDate.ToString("MMM yyyy")</div>
+            </div>
+        </div>
+        <div class="col-md-6 p-3">
+            <h5 class="fw-bold mb-1">@Model.Race?.Name</h5>
+            <p class="text-muted mb-1">📍 @Model.Race?.Circuit</p>
+            <p class="mb-1">🏨 <strong>@Model.Hotel?.Name</strong></p>
+            <p class="mb-2 text-muted">
+                📅 @Model.Race?.StartDate.ToString("dd MMM") - @Model.Race?.EndDate.ToString("dd MMM yyyy")
+            </p>
+            <span class="badge bg-warning text-dark">@Model.Nights нощувки</span>
+        </div>
+        <div class="col-md-3 d-flex flex-column align-items-center justify-content-center p-3 border-start">
+            <div class="text-danger fw-bold" style="font-size: 1.5rem;">@Model.Price.ToString("F0") лв.</div>
+            <div class="text-muted small mb-3">на човек</div>
+            <a asp-controller="Trips" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary btn-sm w-100 mb-2">Детайли</a>
+            @if (User.Identity!.IsAuthenticated && !User.IsInRole("Admin"))
+            {
+                <a asp-controller="Reservation" asp-action="Create" asp-route-tripId="@Model.Id" class="btn btn-danger btn-sm w-100">Резервирай</a>
+            }
+            @if (User.IsInRole("Admin"))
+            {
+                <a asp-controller="Trips" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary btn-sm w-100 mb-1">Edit</a>
+                <a asp-controller="Trips" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger btn-sm w-100">Delete</a>
+            }
+        </div>
+    </div>
 </div>
