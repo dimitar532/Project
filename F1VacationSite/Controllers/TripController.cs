@@ -1,5 +1,6 @@
 ﻿using F1VacationSite.Data;
 using F1VacationSite.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,7 @@ namespace F1VacationSite.Controllers
             return View(trips);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Create()
         {
@@ -50,6 +52,7 @@ namespace F1VacationSite.Controllers
             return View(trip);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -66,6 +69,7 @@ namespace F1VacationSite.Controllers
             return View(trip);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         { 
@@ -83,6 +87,7 @@ namespace F1VacationSite.Controllers
             return View(trip);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(Trip trip)
         {
@@ -99,6 +104,7 @@ namespace F1VacationSite.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Edit(int id, Trip trip)
         {
@@ -119,6 +125,7 @@ namespace F1VacationSite.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -139,7 +146,7 @@ namespace F1VacationSite.Controllers
         {
             var races = await dbContext.Races
                 .AsNoTracking()
-                .OrderBy(r => r.Name)
+                .OrderBy(r => r.StartDate)
                 .ToListAsync();
 
             races.Insert(0, new Race { Id = 0, Name = "-- Select Race --" });
