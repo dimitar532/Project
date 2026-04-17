@@ -1,8 +1,54 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<F1VacationSite.Models.Trip>
+
+@{
+    ViewData["Title"] = "Начало";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="f1-hero text-center py-5">
+    <p class="f1-hero-eyebrow">Formula 1 &middot; Season 2026</p>
+    <h1 class="text-white fw-semibold mb-3">Преживей <span style="color:#e10600">Formula 1</span><br>отвътре</h1>
+    <p class="mb-4" style="color:rgba(255,255,255,0.5)">Избери своя Grand Prix и резервирай незабравима ваканция</p>
+    <div class="d-flex gap-3 justify-content-center flex-wrap">
+        <a class="btn btn-danger px-4 py-2 fw-semibold" asp-controller="Trips" asp-action="Index">Разгледай пакети</a>
+        <a class="btn btn-outline-light px-4 py-2" asp-controller="Race" asp-action="Index">Сезон 2026</a>
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-baseline mb-4">
+        <h6 class="text-uppercase text-muted fw-semibold ls-2 mb-0">Популярни пакети</h6>
+        <a asp-controller="Trips" asp-action="Index" style="color:#e10600;font-size:13px;text-decoration:none;">Всички &rarr;</a>
+    </div>
+    <div class="row g-3">
+        @foreach (var trip in Model)
+        {
+            <div class="col-md-4">
+                <a asp-controller="Trips" asp-action="Details" asp-route-id="@trip.Id" class="text-decoration-none text-dark">
+                    <div class="card h-100 border shadow-sm" style="border-radius:12px;overflow:hidden;">
+                        <div class="d-flex align-items-center justify-content-center position-relative" style="height:110px;background:#1a1a2e;">
+                            <span class="badge position-absolute top-0 start-0 m-2" style="background:#e10600;font-size:10px;">@trip.Race?.Country</span>
+                            <span style="font-size:2.5rem;">&#127937;</span>
+                            <span class="position-absolute bottom-0 end-0 m-2" style="color:#f5a623;font-size:12px;">
+                                @for (int i = 0; i < (trip.Hotel?.Stars ?? 0); i++)
+                                {
+                                    <text>&#9733;</text>
+                                }
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="fw-semibold mb-1">@trip.Race?.Name</h6>
+                            <p class="text-muted mb-3" style="font-size:12px;">&#128205; @trip.Hotel?.City &middot; @trip.Race?.StartDate.ToString("dd MMM") &ndash; @trip.Race?.EndDate.ToString("dd MMM yyyy")</p>
+                            <div class="d-flex justify-content-between align-items-end">
+                                <div>
+                                    <div class="fw-bold" style="font-size:18px;">@trip.Price.ToString("C0", new System.Globalization.CultureInfo("bg-BG"))</div>
+                                    <div class="text-muted" style="font-size:11px;">@trip.Nights нощ. · на човек</div>
+                                </div>
+                                <span class="btn btn-danger btn-sm">Виж</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
 </div>

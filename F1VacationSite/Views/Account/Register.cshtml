@@ -1,42 +1,52 @@
 ﻿@model F1VacationSite.View_Models.RegisterViewModel
 
-<h2>Register</h2>
+@{
+    ViewData["Title"] = "Регистрация";
+}
 
-<form asp-action="Register" method="post">
-    <div asp-validation-summary="All"></div>
+<div class="f1-form-card">
+    <h2>Създай акаунт</h2>
+    <p class="form-subtitle">Регистрирай се и резервирай.</p>
 
-    <div>
-        <label asp-for="FirstName"></label>
-        <input asp-for="FirstName" />
-        <span asp-validation-for="FirstName"></span>
-    </div>
+    <form asp-action="Register" method="post">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3" style="font-size:13px;"></div>
 
-    <div>
-        <label asp-for="LastName"></label>
-        <input asp-for="LastName" />
-        <span asp-validation-for="LastName"></span>
-    </div>
+        <div class="row mb-3">
+            <div class="col">
+                <label asp-for="FirstName" class="form-label">Име</label>
+                <input asp-for="FirstName" class="form-control" placeholder="Иван" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="col">
+                <label asp-for="LastName" class="form-label">Фамилия</label>
+                <input asp-for="LastName" class="form-control" placeholder="Петров" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label">Имейл</label>
+            <input asp-for="Email" class="form-control" placeholder="example@mail.com" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Password" class="form-label">Парола</label>
+            <input asp-for="Password" class="form-control" placeholder="Мин. 8 символа" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="ConfirmPassword" class="form-label">Потвърди парола</label>
+            <input asp-for="ConfirmPassword" class="form-control" placeholder="••••••••" />
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        </div>
 
-    <div>
-        <label asp-for="Email"></label>
-        <input asp-for="Email" />
-        <span asp-validation-for="Email"></span>
-    </div>
-
-    <div>
-        <label asp-for="Password"></label>
-        <input asp-for="Password" />
-        <span asp-validation-for="Password"></span>
-    </div>
-
-    <div>
-        <label asp-for="ConfirmPassword"></label>
-        <input asp-for="ConfirmPassword" />
-        <span asp-validation-for="ConfirmPassword"></span>
-    </div>
-
-    <button type="submit">Register</button>
-</form>
+        <button type="submit" class="btn-f1-submit">Регистрация</button>
+        <div class="f1-form-divider">Вече имаш акаунт?</div>
+        <div class="text-center">
+            <a asp-action="Login" class="f1-form-link">Влез тук</a>
+        </div>
+    </form>
+</div>
 
 @section Scripts {
     @{
