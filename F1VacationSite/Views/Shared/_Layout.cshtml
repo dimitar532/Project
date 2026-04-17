@@ -1,9 +1,9 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="bg">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - F1VacationSite</title>
+    <title>@ViewData["Title"] - F1 Vacations</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -11,47 +11,57 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light f1-red border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm f1-navbar">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">F1VacationSite</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">F1 Vacations</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Начало</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link" asp-area="" asp-controller="Trips" asp-action="Index">Пакети</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Trips" asp-action="Index">Trips</a>
+                            <a class="nav-link" asp-area="" asp-controller="Race" asp-action="Index">Сезон 2026</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Race" asp-action="Index">Races</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav">
                         @if (User.Identity!.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <span class="nav-link text-dark">Hello, @User.FindFirst("FirstName")?.Value!</span>
+                                <a class="nav-link" asp-controller="Reservation" asp-action="Index">Моите резервации</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Admin" asp-controller="Admin" asp-action="Index">Admin</a>
+                            </li>
+                        }
+                    </ul>
+                    <ul class="navbar-nav align-items-center">
+                        @if (User.Identity!.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <span class="nav-user">&#128100; @User.FindFirst("FirstName")?.Value</span>
                             </li>
                             <li class="nav-item">
                                 <form asp-controller="Account" asp-action="Logout" method="post">
-                                    <button type="submit" class="nav-link text-dark btn btn-link">Logout</button>
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn-nav-logout">Изход</button>
                                 </form>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Login</a>
+                                <a class="nav-link btn-nav-login" asp-controller="Account" asp-action="Login">Вход</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Register</a>
+                                <a class="nav-link btn-nav-register" asp-controller="Account" asp-action="Register">Регистрация</a>
                             </li>
                         }
                     </ul>
@@ -59,17 +69,22 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted f1-red">
-        <div class="container text-white">
-            &copy; 2026 - F1VacationSite
+    <main role="main">
+        @RenderBody()
+    </main>
+
+    <footer class="f1-footer">
+        <div class="f1-footer-brand">F1 Vacations</div>
+        <div class="f1-footer-links">
+            <a asp-controller="Home" asp-action="Index">Начало</a>
+            <a asp-controller="Trips" asp-action="Index">Пакети</a>
+            <a asp-controller="Race" asp-action="Index">Сезон 2026</a>
+            <a asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
+        <div class="f1-footer-copy">&copy; 2026 F1VacationSite</div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
