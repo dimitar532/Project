@@ -1,18 +1,134 @@
 ﻿@model IEnumerable<F1VacationSite.Models.Trip>
 
 @{
-	ViewData["Title"] = "Trips";
+    ViewData["Title"] = "Пакети";
 }
 
-<h1>Trips</h1>
-@if (User.IsInRole("Admin"))
-{
-	<p>
-		<a asp-action="Create">Create New</a>
-	</p>
-}
+<div class="f1-trips-hero px-4 py-4 mb-4">
+    <div style="font-size:11px;color:#e10600;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.5rem;">F1 Vacations 2026</div>
+    <h4 class="text-white fw-medium mb-1">Твоята Formula 1 ваканция те чака</h4>
+    <p class="mb-0" style="color:#888;font-size:13px;">Избери своя Grand Prix и резервирай</p>
+</div>
 
-@foreach (var trip in Model)
-{
-	@await Html.PartialAsync("TripPartial", trip)
+<div class="container-fluid px-4">
+    <div class="d-flex gap-4">
+        <div style="width:240px;flex-shrink:0;">
+            @if (User.IsInRole("Admin"))
+            {
+                <a asp-action="Create" class="btn btn-danger btn-sm w-100 mb-3">+ Добави пакет</a>
+            }
+
+            <div class="card border shadow-sm p-3 mb-3" style="border-radius:10px;">
+                <div class="fw-semibold mb-2" style="font-size:13px;">Регион</div>
+                @foreach (var r in new[] { ("Europe", "Европа"), ("Asia", "Азия"), ("America", "Америка"), ("MiddleEast", "Близък изток"), ("Other", "Друго") })
+                {
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <label class="d-flex align-items-center gap-2 mb-0" style="font-size:13px;cursor:pointer;">
+                            <input type="checkbox" class="region-filter" value="@r.Item1" checked style="accent-color:#e10600;" />
+                            @r.Item2
+                        </label>
+                    </div>
+                }
+            </div>
+
+            <div class="card border shadow-sm p-3 mb-3" style="border-radius:10px;">
+                <div class="fw-semibold mb-2" style="font-size:13px;">Нощувки</div>
+                @foreach (var n in new[] { "3", "4", "5", "7" })
+                {
+                    <div class="mb-2">
+                        <label class="d-flex align-items-center gap-2 mb-0" style="font-size:13px;cursor:pointer;">
+                            <input type="checkbox" class="nights-filter" value="@n" checked style="accent-color:#e10600;" />
+                            @n нощувки
+                        </label>
+                    </div>
+                }
+            </div>
+
+            <div class="card border shadow-sm p-3" style="border-radius:10px;">
+                <div class="fw-semibold mb-2" style="font-size:13px;">Макс. цена</div>
+                <input type="range" id="price-range" min="500" max="5000" value="5000" step="100" class="w-100" style="accent-color:#e10600;" />
+                <div class="d-flex justify-content-between mt-1" style="font-size:12px;">
+                    <span class="text-muted">500 лв.</span>
+                    <span id="price-label" style="color:#e10600;font-weight:500;">5000 лв.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-grow-1">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted" style="font-size:14px;">Намерени: <strong id="visible-count" class="text-dark">@Model.Count()</strong> ваканции</span>
+                <select id="sort-select" class="form-select form-select-sm" style="width:auto;">
+                    <option value="date">По дата</option>
+                    <option value="price-asc">Цена (ниска)</option>
+                    <option value="price-desc">Цена (висока)</option>
+                </select>
+            </div>
+
+            <div id="trips-list">
+                @foreach (var trip in Model)
+                {
+                    var region = trip.Race?.Country switch
+                    {
+                        "Monaco" or "United Kingdom" or "Belgium" or "Italy" or "Hungary" or
+                        "Netherlands" or "Austria" or "Spain" or "Germany" or "France" => "Europe",
+                        "Japan" or "Singapore" or "Azerbaijan" or "China" => "Asia",
+                        "United States" or "Canada" or "Mexico" or "Brazil" => "America",
+                        "Bahrain" or "Saudi Arabia" or "Qatar" or "United Arab Emirates" => "MiddleEast",
+                        _ => "Other"
+                    };
+
+                    <div class="trip-item"
+                         data-price="@trip.Price"
+                         data-nights="@trip.Nights"
+                         data-region="@region"
+                         data-date="@trip.Race?.StartDate.ToString("yyyyMMdd")">
+                        @await Html.PartialAsync("TripPartial", trip)
+                    </div>
+                }
+            </div>
+
+            <div id="no-results" class="text-center py-5 text-muted" style="display:none;">
+                Няма намерени ваканции по избраните критерии.
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function applyFilters() {
+            const maxPrice = parseInt(document.getElementById('price-range').value);
+            const selectedNights = [...document.querySelectorAll('.nights-filter:checked')].map(c => c.value);
+            const selectedRegions = [...document.querySelectorAll('.region-filter:checked')].map(c => c.value);
+            const sortVal = document.getElementById('sort-select').value;
+
+            let items = [...document.querySelectorAll('.trip-item')];
+
+            items.forEach(item => {
+                const priceOk = parseFloat(item.dataset.price) <= maxPrice;
+                const nightsOk = selectedNights.length === 0 || selectedNights.includes(item.dataset.nights);
+                const regionOk = selectedRegions.length === 0 || selectedRegions.includes(item.dataset.region);
+                item.style.display = (priceOk && nightsOk && regionOk) ? 'block' : 'none';
+            });
+
+            const visible = items.filter(i => i.style.display !== 'none');
+            document.getElementById('visible-count').textContent = visible.length;
+            document.getElementById('no-results').style.display = visible.length === 0 ? 'block' : 'none';
+
+            const list = document.getElementById('trips-list');
+            visible.sort((a, b) => {
+                if (sortVal === 'price-asc') return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
+                if (sortVal === 'price-desc') return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
+                return a.dataset.date.localeCompare(b.dataset.date);
+            }).forEach(el => list.appendChild(el));
+        }
+
+        document.getElementById('price-range').addEventListener('input', function () {
+            document.getElementById('price-label').textContent = this.value + ' лв.';
+            applyFilters();
+        });
+
+        document.querySelectorAll('.nights-filter, .region-filter').forEach(cb => cb.addEventListener('change', applyFilters));
+        document.getElementById('sort-select').addEventListener('change', applyFilters);
+    </script>
 }

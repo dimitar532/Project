@@ -1,42 +1,53 @@
 ﻿@model IEnumerable<F1VacationSite.Models.Reservation>
 
-<h2>My Reservations</h2>
+@{
+    ViewData["Title"] = "Моите резервации";
+}
 
-@if (!Model.Any())
-{
-    <p>You have no reservations yet.</p>
-    <a asp-controller="Trips" asp-action="Index">Browse Trips</a>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Race</th>
-                <th>Hotel</th>
-                <th>Nights</th>
-                <th>Price</th>
-                <th>Reserved On</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var r in Model)
-            {
-                <tr>
-                    <td>@r.Trip!.Race!.Name</td>
-                    <td>@r.Trip.Hotel!.Name</td>
-                    <td>@r.Trip.Nights</td>
-                    <td>@r.Trip.Price лв.</td>
-                    <td>@r.ReservationDate.ToString("dd.MM.yyyy")</td>
-                    <td>
-                        <form asp-action="Cancel" asp-route-reservationId="@r.Id" method="post">
-                            @Html.AntiForgeryToken()
-                            <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
-                        </form>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+<div class="container my-4">
+    <h4 class="fw-semibold mb-1">Моите резервации</h4>
+    <p class="text-muted mb-4" style="font-size:13px;">Преглед и управление на твоите F1 ваканции</p>
+
+    @if (!Model.Any())
+    {
+        <div class="card border shadow-sm p-5 text-center" style="border-radius:12px;">
+            <p class="text-muted mb-3">Нямаш направени резервации все още.</p>
+            <a asp-controller="Trips" asp-action="Index" class="btn btn-danger">Разгледай пакети</a>
+        </div>
+    }
+    else
+    {
+        <div class="card border shadow-sm" style="border-radius:12px;overflow:hidden;">
+            <table class="table table-hover mb-0">
+                <thead style="background:#15151e;">
+                    <tr>
+                        <th style="color:rgba(255,255,255,0.6);font-size:11px;text-transform:uppercase;letter-spacing:1px;border:none;">Grand Prix</th>
+                        <th style="color:rgba(255,255,255,0.6);font-size:11px;text-transform:uppercase;letter-spacing:1px;border:none;">Хотел</th>
+                        <th style="color:rgba(255,255,255,0.6);font-size:11px;text-transform:uppercase;letter-spacing:1px;border:none;">Нощувки</th>
+                        <th style="color:rgba(255,255,255,0.6);font-size:11px;text-transform:uppercase;letter-spacing:1px;border:none;">Цена</th>
+                        <th style="color:rgba(255,255,255,0.6);font-size:11px;text-transform:uppercase;letter-spacing:1px;border:none;">Резервирано на</th>
+                        <th style="border:none;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var r in Model)
+                    {
+                        <tr>
+                            <td class="fw-semibold">@r.Trip!.Race!.Name</td>
+                            <td class="text-muted">@r.Trip.Hotel!.Name</td>
+                            <td class="text-muted">@r.Trip.Nights нощ.</td>
+                            <td class="fw-medium">@r.Trip.Price.ToString("C0", new System.Globalization.CultureInfo("bg-BG"))</td>
+                            <td class="text-muted">@r.ReservationDate.ToString("dd.MM.yyyy")</td>
+                            <td>
+                                <form asp-action="Cancel" asp-route-reservationId="@r.Id" method="post">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">Откажи</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

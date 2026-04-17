@@ -1,163 +1,54 @@
 ﻿@model F1VacationSite.Models.Trip
 
-@{
-    ViewData["Title"] = "Trips";
-}
-
-<style>
-    .trips-hero { background: #15151e; padding: 2rem 2rem 1.5rem; margin: -1rem -1rem 1.5rem; }
-    .trips-body { display: flex; gap: 1.5rem; }
-    .trips-sidebar { width: 240px; flex-shrink: 0; }
-    .filter-card { background: white; border-radius: 10px; border: 1px solid #e8e8e8; padding: 1rem; margin-bottom: 1rem; }
-    .filter-title { font-size: 13px; font-weight: 500; color: #222; margin-bottom: 10px; }
-    .filter-item { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-    .filter-item label { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #444; cursor: pointer; }
-    .filter-item input[type=checkbox] { accent-color: #e10600; width: 15px; height: 15px; }
-    .filter-count { font-size: 12px; color: #999; }
-    .trips-results { flex: 1; }
-    .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-    .results-count { font-size: 14px; color: #555; }
-    .results-count strong { color: #222; }
-    .sort-select { border: 1px solid #e0e0e0; border-radius: 6px; padding: 6px 10px; font-size: 13px; color: #444; background: white; }
-    .no-results { text-align: center; padding: 3rem; color: #888; font-size: 14px; }
-</style>
-
-<div class="trips-hero">
-    <div style="font-size:11px; color:#e10600; letter-spacing:3px; text-transform:uppercase; margin-bottom:0.75rem;">F1 Vacations 2026</div>
-    <h1 style="color:white; font-size:24px; font-weight:500; margin-bottom:6px;">Твоята Formula 1 ваканция те чака</h1>
-    <p style="color:#888; font-size:13px; margin-bottom:0;">22 Grand Prix · 5 континента · Незабравими спомени</p>
-</div>
-
-<div class="trips-body">
-    <div class="trips-sidebar">
-        @if (User.IsInRole("Admin"))
+<div class="card border shadow-sm mb-3 d-flex flex-row" style="border-radius:12px;overflow:hidden;">
+    <div class="d-flex align-items-center justify-content-center position-relative flex-shrink-0" style="width:220px;background:#1a1a2e;">
+        @if (!string.IsNullOrEmpty(Model.ImageUrl))
         {
-            <a asp-action="Create" class="btn btn-sm w-100 mb-3" style="background:#e10600; color:white; border:none;">+ Добави Trip</a>
+            <img src="@Model.ImageUrl" alt="@Model.Race?.Name" style="width:100%;height:100%;object-fit:cover;" />
         }
-
-        <div class="filter-card">
-            <div class="filter-title">Регион</div>
-            <div class="filter-item">
-                <label><input type="checkbox" class="region-filter" value="Europe" checked /> Европа</label>
-                <span class="filter-count">5</span>
-            </div>
-            <div class="filter-item">
-                <label><input type="checkbox" class="region-filter" value="Asia" checked /> Азия</label>
-                <span class="filter-count">3</span>
-            </div>
-            <div class="filter-item">
-                <label><input type="checkbox" class="region-filter" value="America" checked /> Америка</label>
-                <span class="filter-count">3</span>
-            </div>
-            <div class="filter-item">
-                <label><input type="checkbox" class="region-filter" value="MiddleEast" checked /> Близък изток</label>
-                <span class="filter-count">2</span>
-            </div>
-        </div>
-
-        <div class="filter-card">
-            <div class="filter-title">Нощувки</div>
-            <div class="filter-item">
-                <label><input type="checkbox" class="nights-filter" value="3" checked /> 3 нощувки</label>
-            </div>
-            <div class="filter-item">
-                <label><input type="checkbox" class="nights-filter" value="4" checked /> 4 нощувки</label>
-            </div>
-            <div class="filter-item">
-                <label><input type="checkbox" class="nights-filter" value="5" checked /> 5 нощувки</label>
-            </div>
-        </div>
-
-        <div class="filter-card">
-            <div class="filter-title">Макс. цена</div>
-            <input type="range" id="price-range" min="500" max="5000" value="5000" step="100" style="width:100%; accent-color:#e10600;" />
-            <div style="display:flex; justify-content:space-between; font-size:12px; color:#888; margin-top:4px;">
-                <span>500 лв.</span>
-                <span id="price-label" style="color:#e10600; font-weight:500;">5000 лв.</span>
-            </div>
-        </div>
+        else
+        {
+            <span style="font-size:3rem;">&#127950;</span>
+        }
+        <span class="badge position-absolute top-0 start-0 m-2" style="background:#e10600;font-size:10px;letter-spacing:0.5px;">@Model.Race?.Country</span>
     </div>
 
-    <div class="trips-results">
-        <div class="results-header">
-            <div class="results-count">Намерени: <strong id="visible-count">@Model.Count()</strong> ваканции</div>
-            <select class="sort-select" id="sort-select">
-                <option value="date">Сортирай: По дата</option>
-                <option value="price-asc">Цена (ниска)</option>
-                <option value="price-desc">Цена (висока)</option>
-            </select>
-        </div>
-
-        <div id="trips-list">
-            @foreach (var trip in Model)
-            {
-                var region = trip.Race?.Country switch {
-                    "Monaco" or "United Kingdom" or "Belgium" or "Italy" or "Hungary" or "Netherlands" or "Austria" or "Spain" => "Europe",
-                    "Japan" or "Singapore" or "Azerbaijan" => "Asia",
-                    "United States" or "Canada" or "Mexico" or "Brazil" => "America",
-                    "Bahrain" or "Saudi Arabia" or "Qatar" or "UAE" => "MiddleEast",
-                    _ => "Other"
-                };
-
-                <div class="trip-item"
-                     data-price="@trip.Price"
-                     data-nights="@trip.Nights"
-                     data-region="@region"
-                     data-date="@trip.Race?.StartDate.ToString("yyyyMMdd")">
-                    @await Html.PartialAsync("TripPartial", trip)
+    <div class="card-body d-flex flex-column justify-content-between">
+        <div>
+            <h5 class="fw-semibold mb-1" style="font-size:16px;">@Model.Race?.Name</h5>
+            <p class="text-muted mb-2" style="font-size:12px;">&#128205; @Model.Race?.Circuit &middot; @Model.Race?.StartDate.ToString("dd MMM") &ndash; @Model.Race?.EndDate.ToString("dd MMM yyyy")</p>
+            <div class="mb-2">
+                <div style="color:#f5a623;font-size:13px;">
+                    @for (int i = 0; i < (Model.Hotel?.Stars ?? 0); i++)
+                    {
+                        <text>&#9733;</text>
+                    }
                 </div>
-            }
+                <div class="fw-medium" style="font-size:13px;">@Model.Hotel?.Name</div>
+                <div class="text-muted" style="font-size:12px;">@Model.Hotel?.City</div>
+            </div>
         </div>
 
-        <div class="no-results" id="no-results" style="display:none;">
-            Няма намерени ваканции по избраните критерии.
+        <div class="d-flex align-items-end justify-content-between pt-2 border-top">
+            <div>
+                <div class="text-muted" style="font-size:12px;">@Model.Nights нощувки</div>
+                <div class="fw-bold" style="font-size:22px;">@Model.Price.ToString("C0", new System.Globalization.CultureInfo("bg-BG"))</div>
+                <div class="text-muted" style="font-size:11px;">на човек</div>
+            </div>
+            <div class="d-flex gap-2">
+                @if (ViewData["HideDetails"] == null)
+                {
+                    <a asp-controller="Trips" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-danger btn-sm">Детайли</a>
+                }
+                @if (User.Identity!.IsAuthenticated)
+                {
+                    <a asp-controller="Reservation" asp-action="Create" asp-route-tripId="@Model.Id" class="btn btn-danger btn-sm">Резервирай</a>
+                }
+                else
+                {
+                    <a asp-controller="Account" asp-action="Login" class="btn btn-danger btn-sm">Резервирай</a>
+                }
+            </div>
         </div>
     </div>
 </div>
-
-@section Scripts {
-<script>
-    function applyFilters() {
-        const maxPrice = parseInt(document.getElementById('price-range').value);
-        const selectedNights = [...document.querySelectorAll('.nights-filter:checked')].map(c => c.value);
-        const selectedRegions = [...document.querySelectorAll('.region-filter:checked')].map(c => c.value);
-        const sortVal = document.getElementById('sort-select').value;
-
-        let items = [...document.querySelectorAll('.trip-item')];
-
-        items.forEach(item => {
-            const price = parseFloat(item.dataset.price);
-            const nights = item.dataset.nights;
-            const region = item.dataset.region;
-
-            const priceOk = price <= maxPrice;
-            const nightsOk = selectedNights.length === 0 || selectedNights.includes(nights);
-            const regionOk = selectedRegions.length === 0 || selectedRegions.includes(region);
-
-            item.style.display = (priceOk && nightsOk && regionOk) ? 'block' : 'none';
-        });
-
-        const visible = items.filter(i => i.style.display !== 'none');
-        document.getElementById('visible-count').textContent = visible.length;
-        document.getElementById('no-results').style.display = visible.length === 0 ? 'block' : 'none';
-
-        const list = document.getElementById('trips-list');
-        visible.sort((a, b) => {
-            if (sortVal === 'price-asc') return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
-            if (sortVal === 'price-desc') return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
-            return a.dataset.date.localeCompare(b.dataset.date);
-        }).forEach(el => list.appendChild(el));
-    }
-
-    document.getElementById('price-range').addEventListener('input', function() {
-        document.getElementById('price-label').textContent = this.value + ' лв.';
-        applyFilters();
-    });
-
-    document.querySelectorAll('.nights-filter, .region-filter').forEach(cb => {
-        cb.addEventListener('change', applyFilters);
-    });
-
-    document.getElementById('sort-select').addEventListener('change', applyFilters);
-</script>
-}
