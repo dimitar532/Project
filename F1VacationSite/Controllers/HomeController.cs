@@ -1,29 +1,24 @@
-using System.Diagnostics;
 using F1VacationSite.Data;
 using F1VacationSite.Models;
+using F1VacationSite.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace F1VacationSite.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly VacationDbContext dbContext;
+        private readonly ITripService tripService;
 
-        public HomeController(VacationDbContext dbContext)
+        public HomeController(ITripService tripService)
         {
-            this.dbContext = dbContext;
+            this.tripService = tripService;
         }
 
         public async Task<IActionResult> Index()
         {
-            var featuredTrips = await dbContext.Trips
-                .Include(t => t.Race)
-                .Include(t => t.Hotel)
-                .OrderBy(t => t.Price)
-                .Take(3)
-                .AsNoTracking()
-                .ToListAsync();
+            var featuredTrips = await tripService.GetTripsByRaceIdAsync(3);
 
             return View(featuredTrips);
         }

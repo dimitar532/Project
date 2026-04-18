@@ -58,6 +58,18 @@ namespace F1VacationSite.Services
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Trip>> GetFeaturedTripsAsync(int count)
+        {
+            return await dbContext
+                .Trips
+                .Include(t => t.Race)
+                .Include(t => t.Hotel)
+                .OrderBy(t => t.Price)
+                .Take(count)
+                .AsNoTracking()
+                .ToListAsync();
+        }
+
         public async Task<Trip?> GetTripByIdAsync(int id)
         {
             return await dbContext
@@ -74,7 +86,7 @@ namespace F1VacationSite.Services
                 .Include(t => t.Race)
                 .Include(t => t.Hotel)
                 .OrderBy(t => t.Price)
-                .Take(raceId)
+                .Where(t => t.RaceId == raceId)
                 .AsNoTracking()
                 .ToListAsync();
         }

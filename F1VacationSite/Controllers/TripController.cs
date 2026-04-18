@@ -1,29 +1,23 @@
-﻿using F1VacationSite.Data;
-using F1VacationSite.Models;
+﻿using F1VacationSite.Models;
+using F1VacationSite.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 
 namespace F1VacationSite.Controllers
 {
     public class TripsController : Controller
     {
-        private readonly VacationDbContext dbContext;
-        public TripsController(VacationDbContext dbContext)
+        private readonly ITripService tripService;
+        public TripsController(ITripService tripService)
         {
-            this.dbContext = dbContext;
+            this.tripService = tripService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var trips = await dbContext
-                .Trips
-                .Include(t => t.Race)
-                .Include(t => t.Hotel)
-                .AsNoTracking()
-                .ToListAsync();
+            var trips = await tripService.GetAllTripsAsync();
 
             return View(trips);
         }
@@ -36,15 +30,12 @@ namespace F1VacationSite.Controllers
             return View(new Trip());
         }
 
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var trip = await dbContext
-                .Trips
-                .Include(t => t.Race)
-                .Include(t => t.Hotel)
-                .FirstOrDefaultAsync(t => t.Id == id);
+            var trip = await tripService.GetTripByIdAsync(id);
 
-            if(trip == null)
+            if (trip == null)
             {
                 return NotFound();
             }
@@ -56,11 +47,7 @@ namespace F1VacationSite.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var trip = await dbContext
-                .Trips
-                .Include(t => t.Race)
-                .Include(t => t.Hotel)
-                .FirstOrDefaultAsync(t => t.Id == id);
+            var trip = await tripService.GetTripByIdAsync(id);
 
             if (trip == null)
                 return NotFound();
@@ -73,12 +60,7 @@ namespace F1VacationSite.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         { 
-            var trip = await dbContext
-                .Trips
-                .Include(t => t.Race)
-                .Include(t => t.Hotel)
-                .FirstOrDefaultAsync(t => t.Id == id);
-
+            var trip = await tripService.GetTripByIdAsync(id);
             if (trip == null)
             {
                 return NotFound();
@@ -93,14 +75,11 @@ namespace F1VacationSite.Controllers
         {
             if (!ModelState.IsValid)
             {
-                foreach (var error in ModelState.Values.SelectMany(v => v.Errors)) { Console.WriteLine("MODEL ERROR: " + error.ErrorMessage); }
                 await PopulateSelectTripsAsync();
                 return View(trip);
             }
 
-            dbContext.Trips.Add(trip);
-            await dbContext.SaveChangesAsync();
-
+            await tripService.CreateTripAsync(trip);
             return RedirectToAction(nameof(Index));
         }
 
@@ -119,42 +98,27 @@ namespace F1VacationSite.Controllers
                 return View(trip);
             }
 
-            dbContext.Trips.Update(trip);
-            await dbContext.SaveChangesAsync();
-
+            await tripService.UpdateTripAsync(trip);
             return RedirectToAction(nameof(Index));
         }
+
+
 
         [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var trip = await dbContext.Trips.FindAsync(id);
-
-            if(trip == null)
-            {
-                return NotFound();
-            }
-
-            dbContext.Trips.Remove(trip);
-            await dbContext.SaveChangesAsync();
-
+            await tripService.DeleteTripAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
         private async Task PopulateSelectTripsAsync()
         {
-            var races = await dbContext.Races
-                .AsNoTracking()
-                .OrderBy(r => r.StartDate)
-                .ToListAsync();
+            var races = (await tripService.GetAllRacesAsync()).ToList();
 
             races.Insert(0, new Race { Id = 0, Name = "-- Select Race --" });
 
-            var hotels = await dbContext.Hotels
-                .AsNoTracking()
-                .OrderBy(h => h.Name)
-                .ToListAsync();
+            var hotels = (await tripService.GetAllHotelsAsync()).ToList();
 
             hotels.Insert(0, new Hotel { Id = 0, Name = "-- Select Hotel --" });
 
