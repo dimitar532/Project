@@ -6,5 +6,6 @@
         public const int PriceMax = 10000;
         public const int NightsMin = 1;
         public const int NightsMax = 5;
+        public const int DescriptionMaxLength = 500;
     }
 }

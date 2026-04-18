@@ -26,6 +26,9 @@ namespace F1VacationSite.Models
         [Range(TripConstants.NightsMin, TripConstants.NightsMax)]
         public int Nights { get; set; }
 
+        [StringLength(TripConstants.DescriptionMaxLength)]
+        public string? Description { get; set; }
+
         public virtual Race? Race { get; set; } = null!;
         public virtual Hotel? Hotel { get; set; } = null!;
 
