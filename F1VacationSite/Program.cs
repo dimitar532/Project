@@ -1,6 +1,7 @@
 using F1VacationSite.Data;
 using F1VacationSite.Data.Models;
 using F1VacationSite.Data.Seed;
+using F1VacationSite.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,6 +22,9 @@ namespace F1VacationSite
             {
                 options.UseSqlServer(connectionString);
             });
+
+            builder.Services.AddScoped<ITripService, TripService>();
+            builder.Services.AddScoped<IReservationService, ReservationService>();
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
