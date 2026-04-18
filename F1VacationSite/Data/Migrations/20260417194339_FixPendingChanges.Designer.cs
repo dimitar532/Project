@@ -4,6 +4,7 @@ using F1VacationSite.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace F1VacationSite.Migrations
 {
     [DbContext(typeof(VacationDbContext))]
-    partial class VacationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260417194339_FixPendingChanges")]
+    partial class FixPendingChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -580,128 +583,98 @@ namespace F1VacationSite.Migrations
                         new
                         {
                             Id = 1,
-                            Description = "Пакетът включва престой в сърцето на Мелбърн с директен изглед към Albert Park. Идеален за феновете, търсещи комфорт и близост до пистата.",
                             HotelId = 1,
-                            Nights = 5,
-                            Price = 3200m,
-                            RaceId = 3
+                            Nights = 3,
+                            Price = 1299.99m,
+                            RaceId = 1
                         },
                         new
                         {
                             Id = 2,
-                            Description = "Петзвездно изживяване в легендарното Monte Carlo. Хотелът се намира на метри от пистата — усети магията на Monaco GP от първа ръка.",
                             HotelId = 6,
-                            Nights = 5,
-                            Price = 4800m,
-                            RaceId = 7
+                            Nights = 4,
+                            Price = 2499.00m,
+                            RaceId = 2
                         },
                         new
                         {
                             Id = 3,
-                            Description = "Miami GP с престой в един от най-стилните хотели на South Beach. Съчетай Формула 1 с плажния живот на Маями.",
-                            HotelId = 4,
-                            Nights = 4,
-                            Price = 3500m,
-                            RaceId = 5
+                            HotelId = 1,
+                            Nights = 3,
+                            Price = 1399.50m,
+                            RaceId = 3
                         },
                         new
                         {
                             Id = 4,
-                            Description = "Singapore GP е единственото нощно състезание в календара. Marina Bay Sands предлага невероятна гледка към градските светлини и пистата.",
-                            HotelId = 16,
-                            Nights = 4,
-                            Price = 3800m,
-                            RaceId = 16
+                            HotelId = 6,
+                            Nights = 5,
+                            Price = 3499.00m,
+                            RaceId = 7
                         },
                         new
                         {
                             Id = 5,
-                            Description = "British GP в Silverstone е едно от най-емблематичните събития в спорта. Whittlebury Hall е само минути от пистата сред английската провинция.",
-                            HotelId = 9,
-                            Nights = 5,
-                            Price = 2700m,
-                            RaceId = 11
+                            HotelId = 5,
+                            Nights = 2,
+                            Price = 899.99m,
+                            RaceId = 9
                         },
                         new
                         {
                             Id = 6,
-                            Description = "Italian GP в Monza — домът на тифозите. Почувствай страстта на италианските фенове сред историческия парк.",
-                            HotelId = 13,
-                            Nights = 4,
-                            Price = 2500m,
-                            RaceId = 15
+                            HotelId = 9,
+                            Nights = 2,
+                            Price = 799.00m,
+                            RaceId = 11
                         },
                         new
                         {
                             Id = 7,
-                            Description = "Las Vegas GP е най-екстравагантното събитие в календара. The Venetian предлага луксозно изживяване в центъра на Strip-а.",
-                            HotelId = 20,
-                            Nights = 4,
-                            Price = 4200m,
-                            RaceId = 21
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Description = "Azerbaijan GP на улиците на Баку е едно от най-непредсказуемите състезания. Four Seasons е само на крачка от пистата.",
-                            HotelId = 15,
-                            Nights = 4,
-                            Price = 2900m,
-                            RaceId = 4
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Description = "Hungarian GP в Будапеща съчетава страхотно състезание с богата култура. Kempinski е в самия център на столицата.",
-                            HotelId = 11,
-                            Nights = 4,
-                            Price = 2300m,
-                            RaceId = 12
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Description = "Финалното състезание на сезона в Abu Dhabi е незабравимо. Emirates Palace е един от най-луксозните хотели в света.",
-                            HotelId = 22,
-                            Nights = 5,
-                            Price = 3600m,
-                            RaceId = 22
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Description = "Spanish GP в Барселона е класика от Формула 1 календара. Hotel Arts предлага панорамна гледка към Средиземно море.",
-                            HotelId = 7,
-                            Nights = 4,
-                            Price = 2100m,
-                            RaceId = 8
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Description = "Japanese GP в Suzuka е любимото на истинските фенове. Suzuka Circuit Hotel е буквално в рамките на пистата.",
-                            HotelId = 3,
-                            Nights = 5,
-                            Price = 2800m,
-                            RaceId = 17
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Description = "Belgian GP в Spa-Francorchamps е едно от най-красивите и предизвикателни трасета в света. Radisson Blu е в сърцето на Spa.",
                             HotelId = 10,
-                            Nights = 4,
-                            Price = 2000m,
+                            Nights = 3,
+                            Price = 1199.00m,
                             RaceId = 13
                         },
                         new
                         {
-                            Id = 14,
-                            Description = "Canadian GP в Монреал съчетава вълнуващо състезание с космополитния чар на града. Fairmont Queen Elizabeth е иконата на Монреал.",
-                            HotelId = 5,
-                            Nights = 5,
-                            Price = 2600m,
-                            RaceId = 9
+                            Id = 8,
+                            HotelId = 13,
+                            Nights = 3,
+                            Price = 1099.50m,
+                            RaceId = 15
+                        },
+                        new
+                        {
+                            Id = 9,
+                            HotelId = 16,
+                            Nights = 4,
+                            Price = 1899.99m,
+                            RaceId = 16
+                        },
+                        new
+                        {
+                            Id = 10,
+                            HotelId = 3,
+                            Nights = 3,
+                            Price = 1299.00m,
+                            RaceId = 17
+                        },
+                        new
+                        {
+                            Id = 11,
+                            HotelId = 17,
+                            Nights = 2,
+                            Price = 999.99m,
+                            RaceId = 18
+                        },
+                        new
+                        {
+                            Id = 12,
+                            HotelId = 22,
+                            Nights = 4,
+                            Price = 2299.00m,
+                            RaceId = 22
                         });
                 });
 
