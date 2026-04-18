@@ -8,6 +8,14 @@
 <div class="container my-4" style="max-width:800px;">
     @await Html.PartialAsync("TripPartial", Model)
 
+    @if (!string.IsNullOrEmpty(Model.Description))
+    {
+        <div class="card border shadow-sm mt-3 p-4" style="border-radius:12px;">
+            <h6 class="fw-semibold mb-2">За тази ваканция</h6>
+            <p class="text-muted mb-0" style="font-size:14px;line-height:1.7;">@Model.Description</p>
+        </div>
+    }
+
     <div class="d-flex gap-2 mt-2">
         <a asp-action="Index" class="btn btn-outline-secondary btn-sm">&#8592; Назад към пакети</a>
         @if (User.IsInRole("Admin"))

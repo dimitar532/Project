@@ -220,3 +220,13 @@ body {
     background: #15151e;
     border-bottom: 2px solid #e10600;
 }
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}

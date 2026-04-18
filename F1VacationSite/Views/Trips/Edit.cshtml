@@ -1,51 +1,60 @@
 ﻿@model F1VacationSite.Models.Trip
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Редактирай пакет";
+    ViewData["HideDetails"] = true;
 }
 
-<h1>Edit</h1>
+<div class="container my-4" style="max-width:600px;">
+    <h5 class="fw-semibold mb-4">Редактирай пакет</h5>
 
-@await Html.PartialAsync("TripPartial", Model)
-
-<h4>Trip</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="card border shadow-sm p-4" style="border-radius:12px;">
+        <form asp-action="Edit" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="RaceId" class="control-label"></label>
-                <select asp-for="RaceId" asp-items="ViewBag.Races" class="form-control"></select>
+
+            <div class="mb-3">
+                <label asp-for="RaceId" class="form-label">Състезание</label>
+                <select asp-for="RaceId" asp-items="ViewBag.Races" class="form-select"></select>
                 <span asp-validation-for="RaceId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="HotelId" class="control-label"></label>
-                <select asp-for="HotelId" asp-items="ViewBag.Hotels" class="form-control"></select>
+            <div class="mb-3">
+                <label asp-for="HotelId" class="form-label">Хотел</label>
+                <select asp-for="HotelId" asp-items="ViewBag.Hotels" class="form-select"></select>
                 <span asp-validation-for="HotelId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
+            <div class="mb-3">
+                <label asp-for="Price" class="form-label">Цена (лв.)</label>
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Nights" class="control-label"></label>
+            <div class="mb-3">
+                <label asp-for="Nights" class="form-label">Нощувки</label>
                 <input asp-for="Nights" class="form-control" />
                 <span asp-validation-for="Nights" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="mb-3">
+                <label asp-for="ImageUrl" class="form-label">Image URL</label>
+                <input asp-for="ImageUrl" class="form-control" placeholder="https://..." />
+                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label">Описание</label>
+                <textarea asp-for="Description" class="form-control" rows="4" placeholder="Опиши ваканцията..."></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="d-flex gap-2">
+                <input type="submit" value="Запази" class="btn btn-danger" />
+                <a asp-action="Index" class="btn btn-outline-secondary">Назад</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
