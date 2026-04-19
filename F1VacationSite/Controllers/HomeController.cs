@@ -26,7 +26,7 @@ namespace F1VacationSite.Controllers
             return View();
         }
 
-        public IActionResult NotFound()
+        public new IActionResult NotFound()
         {
             Response.StatusCode = 404;
             return View();
