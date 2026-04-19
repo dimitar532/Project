@@ -1,8 +1,6 @@
-using F1VacationSite.Data;
 using F1VacationSite.Models;
 using F1VacationSite.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace F1VacationSite.Controllers
@@ -18,7 +16,7 @@ namespace F1VacationSite.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var featuredTrips = await tripService.GetTripsByRaceIdAsync(3);
+            var featuredTrips = await tripService.GetFeaturedTripsAsync(3);
 
             return View(featuredTrips);
         }
