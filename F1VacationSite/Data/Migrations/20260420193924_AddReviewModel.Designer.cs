@@ -4,6 +4,7 @@ using F1VacationSite.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace F1VacationSite.Migrations
 {
     [DbContext(typeof(VacationDbContext))]
-    partial class VacationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260420193924_AddReviewModel")]
+    partial class AddReviewModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -541,40 +544,6 @@ namespace F1VacationSite.Migrations
                     b.ToTable("Reservations");
                 });
 
-            modelBuilder.Entity("F1VacationSite.Models.Review", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Comment")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TripId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TripId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Reviews");
-                });
-
             modelBuilder.Entity("F1VacationSite.Models.Trip", b =>
                 {
                     b.Property<int>("Id")
@@ -891,25 +860,6 @@ namespace F1VacationSite.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("F1VacationSite.Models.Review", b =>
-                {
-                    b.HasOne("F1VacationSite.Models.Trip", "Trip")
-                        .WithMany("Reviews")
-                        .HasForeignKey("TripId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("F1VacationSite.Data.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Trip");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("F1VacationSite.Models.Trip", b =>
                 {
                     b.HasOne("F1VacationSite.Models.Hotel", "Hotel")
@@ -993,11 +943,6 @@ namespace F1VacationSite.Migrations
             modelBuilder.Entity("F1VacationSite.Models.Race", b =>
                 {
                     b.Navigation("Trips");
-                });
-
-            modelBuilder.Entity("F1VacationSite.Models.Trip", b =>
-                {
-                    b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618
         }

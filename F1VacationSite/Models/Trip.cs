@@ -33,5 +33,7 @@ namespace F1VacationSite.Models
         public virtual Hotel? Hotel { get; set; } = null!;
 
         public string? ImageUrl { get; set; }
+
+        public ICollection<Review>? Reviews { get; set; } = new List<Review>();
     }
 }

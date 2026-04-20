@@ -17,6 +17,8 @@ namespace F1VacationSite.Data
         public DbSet<Race> Races { get; set; } = null!;
         public DbSet<Hotel> Hotels { get; set; } = null!;
 
+        public DbSet<Review> Reviews { get; set; } = null!;
+
         public DbSet<Reservation> Reservations { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

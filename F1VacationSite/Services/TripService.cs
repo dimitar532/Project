@@ -76,6 +76,7 @@ namespace F1VacationSite.Services
                 .Trips
                 .Include(t => t.Race)
                 .Include(t => t.Hotel)
+                .Include(t => t.Reviews)
                 .FirstOrDefaultAsync(t => t.Id == id);
         }
 
