@@ -13,7 +13,7 @@ namespace F1VacationSite.Services
             this.dbContext = dbContext;
         }
 
-        public async Task CreateAsync(int tripId, string userId, string? specialRequest)
+        public async Task CreateAsync(int tripId, string? userId, string? specialRequest)
         {
             var reservation = new Reservation
             {

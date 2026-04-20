@@ -25,7 +25,7 @@ namespace F1VacationSite.Controllers
         {
             var userId = userManager
                 .GetUserId(User);
-            var reservations = await reservationService.GetUserReservationsAsync(userId);
+            var reservations = await reservationService.GetUserReservationsAsync(userId!);
 
             return View(reservations);
         }

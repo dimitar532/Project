@@ -13,18 +13,18 @@
         <div asp-validation-summary="ModelOnly" class="text-danger mb-3" style="font-size:13px;"></div>
 
         <div class="mb-3">
-            <label asp-for="Email" class="form-label">Имейл</label>
+            <label class="form-label">Имейл</label>
             <input asp-for="Email" class="form-control" placeholder="example@mail.com" />
             <span asp-validation-for="Email" class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <label asp-for="Password" class="form-label">Парола</label>
+            <label class="form-label">Парола</label>
             <input asp-for="Password" class="form-control" placeholder="••••••••" />
             <span asp-validation-for="Password" class="text-danger"></span>
         </div>
         <div class="mb-3 d-flex align-items-center gap-2">
-            <input asp-for="RememberMe" class="form-check-input mt-0" style="accent-color:#e10600;" />
-            <label asp-for="RememberMe" class="form-label mb-0" style="font-size:13px;color:#666;">Запомни ме</label>
+            <input type="checkbox" name="RememberMe" class="form-check-input mt-0" style="accent-color:#e10600;" />
+            <label class="form-label mb-0" style="font-size:13px;color:#666;">Запомни ме</label>
         </div>
 
         <button type="submit" class="btn-f1-submit">Вход</button>

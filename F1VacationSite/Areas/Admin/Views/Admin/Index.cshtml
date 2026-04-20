@@ -2,10 +2,10 @@
     ViewData["Title"] = "Admin Panel";
 }
 
-<h2>Admin Panel</h2>
-
-<ul>
-    <li><a asp-area="Admin" asp-controller="Trip" asp-action="Index">Manage Trips</a></li>
-    <li><a asp-area="Admin" asp-controller="Race" asp-action="Index">Manage Races</a></li>
-    <li><a asp-area="Admin" asp-controller="Hotel" asp-action="Index">Manage Hotels</a></li>
-</ul>
+<div class="container my-4">
+    <h4 class="fw-semibold mb-4">Admin Panel</h4>
+    <div class="list-group" style="max-width:300px;">
+        <a asp-area="" asp-controller="Trips" asp-action="Index" class="list-group-item list-group-item-action">Manage Trips</a>
+        <a asp-area="" asp-controller="Race" asp-action="Index" class="list-group-item list-group-item-action">Manage Races</a>
+    </div>
+</div>
